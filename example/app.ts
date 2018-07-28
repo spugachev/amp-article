@@ -12,6 +12,15 @@ app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
 app.use(cookieParser());
 
+app.all('*', (req, res, next) => {
+  res.setHeader('Access-Control-Allow-Origin', '*');
+  res.setHeader('Access-Control-Allow-Credentials', 'true');
+  res.setHeader('AMP-Access-Control-Allow-Source-Origin', 'http://' + req.headers.host);
+  res.setHeader('Access-Control-Expose-Headers', 'AMP-Access-Control-Allow-Source-Origin');
+  
+  next();
+});
+
 app.use(express.static(path.join(__dirname, 'public')));
 app.use('/api', apiRouter);
 
@@ -26,7 +35,7 @@ server.on('listening', () => {
   const addr = server.address();
   const bind = typeof addr === 'string'
     ? `pipe ${addr}`
-    : `http://localhost:${addr.port}`;
+    : `http://localhost:${addr.port}#development=1`;
 
   console.log(`Listening on ${bind}`);
 });
