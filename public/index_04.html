@@ -80,15 +80,15 @@
         })"/>Показывать только в наличии
     </label>
 
-    <amp-list class="offers" height="2320" layout="fixed-height" 
+    <amp-list class="offers" height="3720" layout="fixed-height" 
              src="//localhost:3000/api/bikes"
              [src]="filteredBikes()"
-             [height]="(200 + (16*2)) * filteredBikes().length"
+             [height]="(340 + (16*2)) * filteredBikes().length"
              items=".">
         <div placeholder>Загрузка...</div>
         <div fallback>Ошибка загрузки товаров.</div>
         <template type="amp-mustache">
-            <div class="card">
+            <div class="card"  style="height: 340px;">
                 <amp-img height="200" layout="fixed-height" 
                 src="{{img}}" alt="{{title}}-{{price}}">
                 </amp-img>
