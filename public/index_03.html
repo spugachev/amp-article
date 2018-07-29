@@ -1,0 +1,95 @@
+<!doctype html>
+<html ⚡ lang="en">
+
+<head>
+    <meta charset="utf-8">
+    <script async src="https://cdn.ampproject.org/v0.js"></script>
+    <script async custom-element="amp-bind" src="https://cdn.ampproject.org/v0/amp-bind-0.1.js"></script>
+    <script async custom-template="amp-mustache" src="https://cdn.ampproject.org/v0/amp-mustache-0.2.js"></script>
+    <script async custom-element="amp-list" src="https://cdn.ampproject.org/v0/amp-list-0.1.js"></script>
+    <title>Магазин Велосипедов</title>
+    <link rel="canonical" href="http://amp-bike-shop.com/index.html">
+    <meta name="viewport" content="width=device-width,minimum-scale=1,initial-scale=1">
+    <style amp-boilerplate>body{-webkit-animation:-amp-start 8s steps(1,end) 0s 1 normal both;-moz-animation:-amp-start 8s steps(1,end) 0s 1 normal both;-ms-animation:-amp-start 8s steps(1,end) 0s 1 normal both;animation:-amp-start 8s steps(1,end) 0s 1 normal both}@-webkit-keyframes -amp-start{from{visibility:hidden}to{visibility:visible}}@-moz-keyframes -amp-start{from{visibility:hidden}to{visibility:visible}}@-ms-keyframes -amp-start{from{visibility:hidden}to{visibility:visible}}@-o-keyframes -amp-start{from{visibility:hidden}to{visibility:visible}}@keyframes -amp-start{from{visibility:hidden}to{visibility:visible}}</style><noscript><style amp-boilerplate>body{-webkit-animation:none;-moz-animation:none;-ms-animation:none;animation:none}</style></noscript>
+    <style amp-custom>
+        /* разместите ваши стили здесь */
+
+        input[type=text] {
+            border: 1px solid black;
+            box-sizing: border-box;
+            width: 100%;
+            font-size: 1.2em;
+            margin: 8px auto;
+            padding: 4px;
+        }
+
+        .active {
+            color: green;
+            text-decoration: underline;
+        }
+
+        .hero-img {
+            max-height: 350px;
+        }
+
+        .hero-img img {
+            object-fit: cover;
+        }
+
+        .content {
+            margin: 0px 16px;
+            position: relative;
+        }
+
+        .card {
+            margin: 16px 0px;
+            padding: 8px;
+            border: 1px solid gray;
+        }
+
+        .card img {
+            object-fit: contain;
+        }
+    </style>
+</head>
+
+<body>
+    <amp-img class="hero-img" src="img/hero.jpg" width="320" height="213" layout="responsive">
+    </amp-img>
+
+    <div class="content">
+        <h2>Добро пожаловать в AMP магазин велосипедов!</h2>
+
+        <label [class]="onlyAvailable? 'active' : ''" >
+            <input type="checkbox" on="change:AMP.setState({
+                onlyAvailable: event.checked
+            })" />Показывать только в наличии
+        </label>
+
+        <amp-state id="bikes" src="//localhost:3000/api/bikes">
+        </amp-state>
+
+        <amp-bind-macro id="filteredBikes" expression="bikes.filter(bike => onlyAvailable ? bike.available : true)">
+        </amp-bind-macro>
+
+        <amp-list class="offers" height="2320" layout="fixed-height" src="//localhost:3000/api/bikes" [src]="filteredBikes()" [height]="(200 + (16*2)) * filteredBikes().length"
+            items=".">
+            <div placeholder>Загрузка...</div>
+            <div fallback>Ошибка загрузки товаров.</div>
+            <template type="amp-mustache">
+                <div class="card">
+                    <amp-img height="200" layout="fixed-height" src="{{img}}" alt="{{title}}-{{price}}">
+                    </amp-img>
+                    <hr/>
+                    <h2>{{title}}</h2>
+                    {{#available}}
+                    <p>В наличии</p>{{/available}} {{^available}}
+                    <p>Нет в наличии</p>{{/available}}
+                    <p>{{price}} рублей</p>
+                </div>
+            </template>
+        </amp-list>
+    </div>
+</body>
+
+</html>

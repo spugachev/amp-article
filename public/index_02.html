@@ -3,6 +3,9 @@
   <head>
     <meta charset="utf-8">
     <script async src="https://cdn.ampproject.org/v0.js"></script>
+    <script async custom-element="amp-bind" src="https://cdn.ampproject.org/v0/amp-bind-0.1.js"></script>
+    <script async custom-template="amp-mustache" src="https://cdn.ampproject.org/v0/amp-mustache-0.2.js"></script>
+    <script async custom-element="amp-list" src="https://cdn.ampproject.org/v0/amp-list-0.1.js"></script>
     <title>Магазин Велосипедов</title>
     <link rel="canonical" href="http://amp-bike-shop.com/index.html">
     <meta name="viewport" content="width=device-width,minimum-scale=1,initial-scale=1">
@@ -53,8 +56,26 @@
       </amp-img>
   
       <div class="content">
-      <h2>Добро пожаловать в AMP магазин велосипедов!</h2>
+      <h2>Добро пожаловать в AMP магазин велосипедов!</h2>     
 
+      <amp-list class="offers" 
+      height="2320" layout="fixed-height" 
+      src="//localhost:3000/api/bikes" items=".">
+      <div placeholder>Загрузка...</div>
+      <div fallback>Ошибка загрузки товаров.</div>
+      <template type="amp-mustache">
+          <div class="card">
+              <amp-img height="200" layout="fixed-height" 
+              src="{{img}}" alt="{{title}}-{{price}}">
+              </amp-img>
+              <hr/>
+              <h2>{{title}}</h2>
+              {{#available}}<p>В наличии</p>{{/available}}
+              {{^available}}<p>Нет в наличии</p>{{/available}}
+              <p>{{price}} рублей</p>
+          </div>
+      </template>    
+      </amp-list> 
       </div>
   </body>
 </html>
